@@ -14,9 +14,7 @@ static TextLayer *s_bluetooth_layer;
 static Layer *s_path_layer;
 //Variables
 static bool s_bSegundos = true; //-1 --> true
-static char battery_text[] = "100%";
-//Fuentes
-static GFont s_time_font;
+
 //Bitmaps
 static BitmapLayer *s_background_layer;
 static GBitmap *s_background_bitmap;
@@ -24,13 +22,14 @@ static GBitmap *s_background_bitmap;
 static GPath *s_my_path_ptr = NULL;
 static GPath *s_linea_horizontal_ptr = NULL;
 static GPath *s_linea_vertical_ptr = NULL;
+#define Y_LIN_HOR 137
 static const GPathInfo PATH_LINEA_HORZ = {
   .num_points = 4,
-  .points = (GPoint []) {{0, 140}, {145, 140}, {145, 140+3}, {0, 140+3}} //recta
+  .points = (GPoint []) {{0, Y_LIN_HOR}, {145, Y_LIN_HOR}, {145, Y_LIN_HOR+3}, {0, Y_LIN_HOR+3}} //recta
 };
 static const GPathInfo PATH_LINEA_VERT = {
   .num_points = 4,
-  .points = (GPoint []) {{73, 90}, {73, 140}, {73+3, 140}, {73+3, 90}} //recta
+  .points = (GPoint []) {{75, 98}, {75, Y_LIN_HOR}, {75+3, Y_LIN_HOR}, {75+3, 98}} //recta
 };
 
 
@@ -112,7 +111,7 @@ static void main_window_load(Window *window) {
   //BATERIA
   int intAnchoBat = bounds.size.w/2 + 25;
   int intMrg = 2;
-  s_battery_layer = text_layer_create(GRect(intMrg, PBL_IF_ROUND_ELSE(10, 8), intAnchoBat, 40));
+  s_battery_layer = text_layer_create(GRect(intMrg, PBL_IF_ROUND_ELSE(8, 6), intAnchoBat, 40));
   text_layer_set_background_color(s_battery_layer, GColorClear );
   text_layer_set_text_color(s_battery_layer, GColorBlack); 
   text_layer_set_text(s_battery_layer, "---%");
@@ -121,7 +120,7 @@ static void main_window_load(Window *window) {
   layer_add_child(window_layer, text_layer_get_layer(s_battery_layer)); 
   
   //BLUETOOTH
-  s_bluetooth_layer = text_layer_create(GRect(intMrg +intAnchoBat, PBL_IF_ROUND_ELSE(10, 8), bounds.size.w-intAnchoBat-2*intMrg, 40));
+  s_bluetooth_layer = text_layer_create(GRect(intMrg +intAnchoBat, PBL_IF_ROUND_ELSE(8, 6), bounds.size.w-intAnchoBat-2*intMrg, 40));
   text_layer_set_background_color(s_bluetooth_layer, GColorFromHEX(0x55FFAA));
   text_layer_set_text_color(s_bluetooth_layer, GColorBlack);
   text_layer_set_text(s_bluetooth_layer, "OK");
@@ -130,7 +129,7 @@ static void main_window_load(Window *window) {
   layer_add_child(window_layer, text_layer_get_layer(s_bluetooth_layer));
 
   // HORA 
-  s_time_layer = text_layer_create(GRect(0, PBL_IF_ROUND_ELSE(60, 54), bounds.size.w, 55));
+  s_time_layer = text_layer_create(GRect(0, PBL_IF_ROUND_ELSE(57, 51), bounds.size.w, 55));
   text_layer_set_background_color(s_time_layer, GColorBlack );
   text_layer_set_text_color(s_time_layer, GColorWhite);
   text_layer_set_text(s_time_layer, "00:00");
@@ -141,7 +140,7 @@ static void main_window_load(Window *window) {
 
   //Segundos
   if (s_bSegundos){
-    s_seconds_layer = text_layer_create(GRect( bounds.size.w/2 +2 , PBL_IF_ROUND_ELSE(60, 54)+52, bounds.size.w/2-2, 50));
+    s_seconds_layer = text_layer_create(GRect( bounds.size.w/2 +2 , PBL_IF_ROUND_ELSE(57, 51)+52, bounds.size.w/2-2, 50));
     text_layer_set_background_color(s_seconds_layer, GColorClear);
     text_layer_set_text_color(s_seconds_layer, GColorBlack);
     text_layer_set_text(s_seconds_layer, "00");
@@ -151,7 +150,7 @@ static void main_window_load(Window *window) {
   }
   
   //DIA SEMANA
-  s_dayWeek_layer = text_layer_create(GRect( 2 , PBL_IF_ROUND_ELSE(60, 54)+52, bounds.size.w/2-2, 50));
+  s_dayWeek_layer = text_layer_create(GRect( 2 , PBL_IF_ROUND_ELSE(57, 51)+52, bounds.size.w/2-2, 50));
   text_layer_set_background_color(s_dayWeek_layer, GColorClear);
   text_layer_set_text_color(s_dayWeek_layer, GColorBlack);
   text_layer_set_text(s_dayWeek_layer, "Mon");
@@ -160,7 +159,7 @@ static void main_window_load(Window *window) {
   layer_add_child(window_layer, text_layer_get_layer(s_dayWeek_layer));
 
   //FECHA
-  s_fecha_layer = text_layer_create(GRect( 2 , PBL_IF_ROUND_ELSE(145, 145-6), bounds.size.w-2, 50));
+  s_fecha_layer = text_layer_create(GRect( 2 , PBL_IF_ROUND_ELSE(142, 142-6), bounds.size.w-2, 50));
   text_layer_set_background_color(s_fecha_layer, GColorClear);
   text_layer_set_text_color(s_fecha_layer, GColorBlack);
   text_layer_set_text(s_fecha_layer, "Mon");
