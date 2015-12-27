@@ -1,0 +1,24 @@
+{
+    "appKeys": {},
+    "capabilities": [
+        ""
+    ],
+    "companyName": "Javier Iglesias",
+    "longName": "Reloj Javier Iglesias",
+    "projectType": "native",
+    "resources": {
+        "media": []
+    },
+    "sdkVersion": "3",
+    "shortName": "Reloj_Javier",
+    "targetPlatforms": [
+        "aplite",
+        "basalt",
+        "chalk"
+    ],
+    "uuid": "6bc673ad-79be-4a2b-b218-4bbc26157319",
+    "versionLabel": "1.0",
+    "watchapp": {
+        "watchface": true
+    }
+}
