@@ -9,18 +9,18 @@
     "resources": {
         "media": [
             {
+                "file": "images/RelojJavier_28_28.png",
+                "menuIcon": true,
+                "name": "ICONO_MENU",
+                "targetPlatforms": null,
+                "type": "bitmap"
+            },
+            {
                 "file": "images/RelojJavier.png",
                 "name": "IMAGEN_PRINCIPAL",
                 "targetPlatforms": [
                     "basalt"
                 ],
-                "type": "bitmap"
-            },
-            {
-                "file": "images/RelojJavier_28_28.png",
-                "menuIcon": true,
-                "name": "ICONO_MENU",
-                "targetPlatforms": null,
                 "type": "bitmap"
             }
         ]
@@ -28,9 +28,7 @@
     "sdkVersion": "3",
     "shortName": "Reloj_Javier",
     "targetPlatforms": [
-        "aplite",
-        "basalt",
-        "chalk"
+        "basalt"
     ],
     "uuid": "6bc673ad-79be-4a2b-b218-4bbc26157319",
     "versionLabel": "1.0",

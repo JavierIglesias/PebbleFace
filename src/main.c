@@ -2,6 +2,9 @@
 #include "main.h"
 // ancho pantalla = 145 alto=160
 //fonts: https://gist.github.com/sarfata/aec9c06ba9d66d159ed4
+
+#define KEY_BATERIA 1
+
 //Controles
 static Window *s_main_window;
 static TextLayer *s_time_layer;
@@ -13,7 +16,8 @@ static TextLayer *s_bluetooth_layer;
 //Layer grafico
 static Layer *s_path_layer;
 //Variables
-static bool s_bSegundos = true; //-1 --> true
+static bool s_bSegundos = true; //Para presentar o no segundos (dicen que consume mucho)
+static int  mintBateria = 100; //Para recordar valor de bateria (sino hay que esperar al servicio)
 
 //Bitmaps
 static BitmapLayer *s_background_layer;
@@ -36,11 +40,12 @@ static const GPathInfo PATH_LINEA_VERT = {
 //CONTROLADOR BATERÍA
 static void handle_battery(BatteryChargeState charge_state) {
   static char battery_text[] = "100%";
-
+  mintBateria = charge_state.charge_percent; //actualizo valor
+  
   if (charge_state.is_charging) {
     snprintf(battery_text, sizeof(battery_text), "C...");
   } else {
-    snprintf(battery_text, sizeof(battery_text), "%d%%", charge_state.charge_percent);
+    snprintf(battery_text, sizeof(battery_text), "%d%%", mintBateria);
   }
   text_layer_set_text(s_battery_layer, battery_text);
   text_layer_set_background_color(s_battery_layer, charge_state.charge_percent > 20 ? GColorClear : GColorFromHEX(0xFF0000));
@@ -111,10 +116,17 @@ static void main_window_load(Window *window) {
   //BATERIA
   int intAnchoBat = bounds.size.w/2 + 25;
   int intMrg = 2;
+  static char battery_text[] = "---%";
+  GColor colFondo =  GColorClear; //color por defecto bat>20%
+  if (persist_exists(KEY_BATERIA)) { //Miro si hay valor salvado en el cierre de la aplicación
+      mintBateria = persist_read_int(KEY_BATERIA);
+      snprintf(battery_text, sizeof(battery_text), "%d%%", mintBateria);
+      colFondo = mintBateria > 20 ? GColorClear : GColorFromHEX(0xFF0000);
+  }
   s_battery_layer = text_layer_create(GRect(intMrg, PBL_IF_ROUND_ELSE(8, 6), intAnchoBat, 40));
-  text_layer_set_background_color(s_battery_layer, GColorClear );
+  text_layer_set_background_color(s_battery_layer, colFondo );
   text_layer_set_text_color(s_battery_layer, GColorBlack); 
-  text_layer_set_text(s_battery_layer, "---%");
+  text_layer_set_text(s_battery_layer, battery_text);
   text_layer_set_font(s_battery_layer, fonts_get_system_font(FONT_KEY_BITHAM_30_BLACK));
   text_layer_set_text_alignment(s_battery_layer, GTextAlignmentCenter);
   layer_add_child(window_layer, text_layer_get_layer(s_battery_layer)); 
@@ -225,6 +237,7 @@ static void init() {
 }
 static void deinit() {
   // Destroy Window
+  persist_write_int(KEY_BATERIA, mintBateria);
   window_destroy(s_main_window);
 }
 
