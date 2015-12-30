@@ -31,9 +31,10 @@ static const GPathInfo PATH_LINEA_HORZ = {
   .num_points = 4,
   .points = (GPoint []) {{0, Y_LIN_HOR}, {145, Y_LIN_HOR}, {145, Y_LIN_HOR+3}, {0, Y_LIN_HOR+3}} //recta
 };
+#define X_LIN_VER 84
 static const GPathInfo PATH_LINEA_VERT = {
   .num_points = 4,
-  .points = (GPoint []) {{75, 98}, {75, Y_LIN_HOR}, {75+3, Y_LIN_HOR}, {75+3, 98}} //recta
+  .points = (GPoint []) {{X_LIN_VER, 98}, {X_LIN_VER, Y_LIN_HOR}, {X_LIN_VER+3, Y_LIN_HOR}, {X_LIN_VER+3, 98}} //recta
 };
 
 
@@ -150,9 +151,18 @@ static void main_window_load(Window *window) {
   // Add it as a child layer to the Window's root layer
   layer_add_child(window_layer, text_layer_get_layer(s_time_layer));
 
+  //DIA SEMANA
+  s_dayWeek_layer = text_layer_create(GRect( 0 , PBL_IF_ROUND_ELSE(57, 51)+52, X_LIN_VER-2, 50));
+  text_layer_set_background_color(s_dayWeek_layer, GColorClear);
+  text_layer_set_text_color(s_dayWeek_layer, GColorBlack);
+  text_layer_set_text(s_dayWeek_layer, "Mon");
+  text_layer_set_font(s_dayWeek_layer, fonts_get_system_font(FONT_KEY_BITHAM_30_BLACK));
+  text_layer_set_text_alignment(s_dayWeek_layer, GTextAlignmentCenter);
+  layer_add_child(window_layer, text_layer_get_layer(s_dayWeek_layer));
+  
   //Segundos
   if (s_bSegundos){
-    s_seconds_layer = text_layer_create(GRect( bounds.size.w/2 +2 , PBL_IF_ROUND_ELSE(57, 51)+52, bounds.size.w/2-2, 50));
+    s_seconds_layer = text_layer_create(GRect( X_LIN_VER +3 +2 , PBL_IF_ROUND_ELSE(57, 51)+52, bounds.size.w-X_LIN_VER-3, 50));
     text_layer_set_background_color(s_seconds_layer, GColorClear);
     text_layer_set_text_color(s_seconds_layer, GColorBlack);
     text_layer_set_text(s_seconds_layer, "00");
@@ -160,18 +170,8 @@ static void main_window_load(Window *window) {
     text_layer_set_text_alignment(s_seconds_layer, GTextAlignmentCenter);
     layer_add_child(window_layer, text_layer_get_layer(s_seconds_layer));
   }
-  
-  //DIA SEMANA
-  s_dayWeek_layer = text_layer_create(GRect( 2 , PBL_IF_ROUND_ELSE(57, 51)+52, bounds.size.w/2-2, 50));
-  text_layer_set_background_color(s_dayWeek_layer, GColorClear);
-  text_layer_set_text_color(s_dayWeek_layer, GColorBlack);
-  text_layer_set_text(s_dayWeek_layer, "Mon");
-  text_layer_set_font(s_dayWeek_layer, fonts_get_system_font(FONT_KEY_BITHAM_30_BLACK));
-  text_layer_set_text_alignment(s_dayWeek_layer, GTextAlignmentCenter);
-  layer_add_child(window_layer, text_layer_get_layer(s_dayWeek_layer));
-
   //FECHA
-  s_fecha_layer = text_layer_create(GRect( 2 , PBL_IF_ROUND_ELSE(142, 142-6), bounds.size.w-2, 50));
+  s_fecha_layer = text_layer_create(GRect( 0 , PBL_IF_ROUND_ELSE(142, 142-6), bounds.size.w, 50));
   text_layer_set_background_color(s_fecha_layer, GColorClear);
   text_layer_set_text_color(s_fecha_layer, GColorBlack);
   text_layer_set_text(s_fecha_layer, "Mon");
